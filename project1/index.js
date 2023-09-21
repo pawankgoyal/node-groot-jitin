@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express()
 const cors = require('cors')
+const path = require('path')
 
 app.use(cors());
 app.get('/suresh', (req, res) => {
@@ -18,6 +19,11 @@ app.get('/demo1', (req, res) => {
 app.get('/demo2/:id', (req, res) => {
     console.log(req.params)
     res.send('this is demo 2')
+})
+
+app.get('/soap', (req, res) => {
+    let filePath = path.join(__dirname, './abc.html')
+    res.sendFile(filePath)
 })
 
 // function abc() {
