@@ -49,6 +49,28 @@ app.delete('/product/:id', (req, res) => {
     res.send(products);
 })
 
+app.put('/product/:id', (req, res) => {
+    const index = products.findIndex(e => e.id == req.params.id)
+    products[index] = req.body;
+    res.send(products);
+})
+
+app.patch('/product/:id', (req, res) => {
+    const { body } = req
+    const index = products.findIndex(e => e.id == req.params.id);
+    let oldProduct = products[index];
+
+    if (body.title) {
+        oldProduct.title = body.title;
+    }
+
+    if (body.price) {
+        oldProduct.price = body.price;
+    }
+
+    products[index] = oldProduct;
+    res.send(products)
+})
 
 app.listen(PORT, (err) => {
     if (err) {
