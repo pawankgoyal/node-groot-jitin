@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
+const cors = require('cors')
 
+app.use(cors())
 const PORT = 1200;
 app.use(express.json())
 
@@ -27,7 +29,6 @@ app.get('/product', (req, res) => {
 });
 
 app.post('/product', (req, res) => {
-    console.log(req.body)
     products.push(req.body)
     res.send(products)
 })
