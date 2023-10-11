@@ -27,6 +27,16 @@ app.delete('/:id', async (req, res) => {
     res.send('done')
 })
 
+app.put('/:id', async (req, res) => {
+    await product.findByIdAndUpdate(req.params.id, req.body, { overwrite: true })
+    res.send({ success: true, message: "updates" })
+})
+
+app.patch('/:id', async (req, res) => {
+    await product.findByIdAndUpdate(req.params.id, req.body)
+    res.send({ success: true, message: "updates" })
+})
+
 app.listen(port, (err) => {
     if (err) {
         console.log(err)
