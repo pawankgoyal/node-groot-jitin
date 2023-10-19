@@ -15,6 +15,11 @@ const registerValidations = [
     body('password', "password must be strong").isStrongPassword(),
 ]
 
+const loginValidations = [
+    body('email', "Invalid email").isEmail(),
+    body('password', "password must be strong").notEmpty(),
+]
+
 app.post('/register', registerValidations, async (req, res) => {
     try {
         const result = validationResult(req);
@@ -56,6 +61,48 @@ app.post('/register', registerValidations, async (req, res) => {
         res.send({ err: error.message })
     }
 
+})
+
+app.post('/login', loginValidations, async (req, res) => {
+
+    try {
+
+        const result = validationResult(req);
+        if (!result.isEmpty()) {
+            return res.send({ errors: result.array() });
+        }
+
+        const { email, password } = req.body;
+        const user = await User.findOne({ email: email })
+
+        if (!user) {
+            return res.status(404).send({ err: 'user does not exists' })
+        }
+
+        const isMatch = bcrypt.compareSync(password, user.password);
+
+        if (!isMatch) {
+            return res.status(403).send({ err: 'incorrect credentials' })
+        }
+
+        res.send(user);
+    } catch (error) {
+        res.status(500).send({ err: error.message })
+    }
+})
+
+app.get('/profile/:userId', async (req, res) => {
+    try {
+        const id = req.params.userId;
+        const user = await User.findById(id).select('-password')
+        if (!user) {
+            return res.status(404).send({ err: "user not exists" })
+        }
+
+        res.send(user)
+    } catch (error) {
+        res.status(500).send({ err: error.message })
+    }
 })
 
 app.listen(PORT, (err) => {
