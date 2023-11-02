@@ -1,0 +1,1 @@
+path, middleware , function that handle request (controller), services
