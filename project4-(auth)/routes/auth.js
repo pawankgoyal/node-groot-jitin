@@ -4,7 +4,6 @@ const { body } = require('express-validator');
 const { registerController, loginController, getProfileController, sendSmsController, emailController } = require('../controllers/authControllers');
 const r = express.Router()
 
-
 const registerValidations = [
     body('name', "Name must be have 2 chars").isLength({ min: 2 }),
     body('email', "Invalid email").isEmail(),
@@ -32,7 +31,7 @@ r.post('/register', registerValidations, registerController)
 
 r.post('/login', loginValidations, loginController)
 
-r.get('/profile/:userId', getProfileController)
+r.get('/profile', getProfileController)
 
 r.post('/sendSms', smsValidations, sendSmsController)
 

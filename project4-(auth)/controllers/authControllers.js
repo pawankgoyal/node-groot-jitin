@@ -3,6 +3,7 @@ const twilio = require('twilio');
 const User = require('../models/User')
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer')
+const jwt = require('jsonwebtoken')
 
 // Credentials to send sms to mobile with twillio, find on twillio dashboard.
 const accountSid = process.env.ACCOUNTSID;
@@ -74,7 +75,9 @@ const loginController = async (req, res) => {
             return res.status(403).send({ err: 'incorrect credentials' })
         }
 
-        res.send(user);
+        let token = jwt.sign({ ...user }, process.env.JWT_SECRET)
+
+        res.send({ token });
     } catch (error) {
         res.status(500).send({ err: error.message })
     }
@@ -83,7 +86,22 @@ const loginController = async (req, res) => {
 // Get user profile with id.
 const getProfileController = async (req, res) => {
     try {
-        const id = req.params.userId;
+        const { token } = req.headers
+
+        if (!token) {
+            return res.status(403).send({ err: "unauthorised" })
+        }
+
+        // Token data
+        let result;
+
+        try {
+            result = jwt.verify(token, process.env.JWT_SECRET)
+        } catch (error) {
+            return res.status(403).send({ err: "unauthorised" })
+        }
+
+        const { _id: id } = result._doc;
         const user = await User.findById(id).select('-password')
         if (!user) {
             return res.status(404).send({ err: "user not exists" })
@@ -124,6 +142,7 @@ const sendSmsController = (req, res) => {
         });
 }
 
+// Send email.
 const emailController = async (req, res) => {
 
     try {
