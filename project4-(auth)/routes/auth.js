@@ -1,7 +1,7 @@
 const express = require('express')
 
 const { body } = require('express-validator');
-const { registerController, loginController, getProfileController, sendSmsController, emailController } = require('../controllers/authControllers');
+const { registerController, loginController, getProfileController, sendSmsController, emailController, logoutController } = require('../controllers/authControllers');
 const r = express.Router()
 
 const registerValidations = [
@@ -30,6 +30,8 @@ const emailValidations = [
 r.post('/register', registerValidations, registerController)
 
 r.post('/login', loginValidations, loginController)
+
+r.get('/logout', logoutController)
 
 r.get('/profile', getProfileController)
 

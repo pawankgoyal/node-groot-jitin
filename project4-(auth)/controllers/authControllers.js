@@ -75,7 +75,8 @@ const loginController = async (req, res) => {
             return res.status(403).send({ err: 'incorrect credentials' })
         }
 
-        let token = jwt.sign({ ...user }, process.env.JWT_SECRET)
+        let token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
+        await User.findByIdAndUpdate(user._id, { token })
 
         res.send({ token });
     } catch (error) {
@@ -101,13 +102,21 @@ const getProfileController = async (req, res) => {
             return res.status(403).send({ err: "unauthorised" })
         }
 
-        const { _id: id } = result._doc;
-        const user = await User.findById(id).select('-password')
+        const { _id: id } = result;
+        const user = await User.findById(id).select(['-password'])
         if (!user) {
             return res.status(404).send({ err: "user not exists" })
         }
 
-        res.send(user)
+        if (token !== user.token) {
+            return res.status(403).send({ err: "unauthorised" })
+        }
+
+        let newUserData = JSON.parse(JSON.stringify(user))
+        delete newUserData.token
+
+        res.send({ data: newUserData })
+
     } catch (error) {
         res.status(500).send({ err: error.message })
     }
@@ -176,4 +185,41 @@ const emailController = async (req, res) => {
 
 }
 
-module.exports = { registerController, loginController, getProfileController, sendSmsController, emailController }
+const logoutController = async (req, res) => {
+
+    try {
+
+        const { token } = req.headers
+
+        if (!token) {
+            return res.status(403).send({ err: "unauthorised" })
+        }
+
+        // Token data
+        let result;
+
+        try {
+            result = jwt.verify(token, process.env.JWT_SECRET)
+        } catch (error) {
+            return res.status(403).send({ err: "unauthorised" })
+        }
+
+        const { _id: id } = result;
+        const user = await User.findById(id).select(['-password'])
+        if (!user) {
+            return res.status(404).send({ err: "user not exists" })
+        }
+
+        if (token !== user.token) {
+            return res.status(403).send({ err: "unauthorised" })
+        }
+
+        await User.findByIdAndUpdate(id, { token: "" })
+
+        res.send({ data: "Logged out successfully" })
+    } catch (error) {
+        res.status(500).send({ err: error.message })
+    }
+}
+
+module.exports = { registerController, loginController, getProfileController, sendSmsController, emailController, logoutController }
