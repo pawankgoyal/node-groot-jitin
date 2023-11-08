@@ -2,6 +2,7 @@ const express = require('express')
 
 const { body } = require('express-validator');
 const { registerController, loginController, getProfileController, sendSmsController, emailController, logoutController } = require('../controllers/authControllers');
+const { authMiddleware } = require('../middlewares/authMiddleware');
 const r = express.Router()
 
 const registerValidations = [
@@ -33,7 +34,7 @@ r.post('/login', loginValidations, loginController)
 
 r.get('/logout', logoutController)
 
-r.get('/profile', getProfileController)
+r.get('/profile', authMiddleware, getProfileController)
 
 r.post('/sendSms', smsValidations, sendSmsController)
 
