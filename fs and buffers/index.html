@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid gray;
+        }
+
+        .prt {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="prt" id="prt">
+        <div class="box"></div>
+    </div>
+</body>
+
+<script>
+
+    for (let i = 0; i < 10000; i++) {
+        let elem = document.getElementsByClassName('box')[0]
+        elem = elem.cloneNode()
+        let char = String.fromCharCode(i)
+
+        elem.innerText = i + ' ' + char
+        console.log(elem)
+        prt.appendChild(elem)
+    }
+
+</script>
+
+</html>
