@@ -11,6 +11,8 @@ const authToken = process.env.AUTHTOKEN;
 
 // Controller to register a new user.
 const registerController = async (req, res) => {
+
+    console.log("first")
     try {
         const result = validationResult(req);
         if (!result.isEmpty()) {
@@ -87,35 +89,12 @@ const loginController = async (req, res) => {
 // Get user profile with id.
 const getProfileController = async (req, res) => {
     try {
-        const { token } = req.headers
 
-        if (!token) {
-            return res.status(403).send({ err: "unauthorised" })
-        }
+        const { id } = req.user
 
-        // Token data
-        let result;
+        const user = await User.findById(id).select(['-password', '-token'])
 
-        try {
-            result = jwt.verify(token, process.env.JWT_SECRET)
-        } catch (error) {
-            return res.status(403).send({ err: "unauthorised" })
-        }
-
-        const { _id: id } = result;
-        const user = await User.findById(id).select(['-password'])
-        if (!user) {
-            return res.status(404).send({ err: "user not exists" })
-        }
-
-        if (token !== user.token) {
-            return res.status(403).send({ err: "unauthorised" })
-        }
-
-        let newUserData = JSON.parse(JSON.stringify(user))
-        delete newUserData.token
-
-        res.send({ data: newUserData })
+        res.send({ data: user })
 
     } catch (error) {
         res.status(500).send({ err: error.message })

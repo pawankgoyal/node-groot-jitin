@@ -17,6 +17,6 @@ app.listen(PORT, (err) => {
         console.log(err)
     }
     else {
-        console.log("server listning on http://locahost:" + PORT);
+        console.log("server listning on http://localhost:" + PORT);
     }
 })
