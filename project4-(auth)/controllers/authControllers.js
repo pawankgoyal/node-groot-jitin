@@ -12,7 +12,6 @@ const authToken = process.env.AUTHTOKEN;
 // Controller to register a new user.
 const registerController = async (req, res) => {
 
-    console.log("first")
     try {
         const result = validationResult(req);
         if (!result.isEmpty()) {
