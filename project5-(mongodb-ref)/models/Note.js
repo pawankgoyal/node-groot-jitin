@@ -9,11 +9,11 @@ const NoteSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    user: {
-        type: mongoose.Types.ObjectId,
-        ref: 'users',
-        required: true
-    }
+    // user: {
+    //     type: mongoose.Types.ObjectId,
+    //     ref: 'users',
+    //     required: true
+    // }
 })
 
 const Note = mongoose.model('notes', NoteSchema)

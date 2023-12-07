@@ -9,7 +9,14 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    notes: [
+        {
+            type: mongoose.Types.ObjectId,
+            unique: true,
+            ref: 'notes'
+        }
+    ]
 })
 
 const User = mongoose.model('users', UserSchema)

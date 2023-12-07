@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const { Note } = require("../models/Note");
+const { User } = require("../models/User");
 
 const addNoteController = async (req, res) => {
 
@@ -11,6 +12,9 @@ const addNoteController = async (req, res) => {
         }
 
         const note = await Note.create(req.body);
+
+        await User.findByIdAndUpdate(req.body.user, { $push: { notes: { $each: [note._id] } } })
+
         res.json(note)
     } catch (error) {
         res.status(500).json({ err: error.message })

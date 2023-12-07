@@ -18,4 +18,19 @@ const registerController = async (req, res) => {
 
 }
 
-module.exports = { registerController }
+
+const getUserProfileController = async (req, res) => {
+    try {
+
+        const { userId } = req.params;
+
+        const user = await User.findById(userId)
+        // const user = await User.findById(userId).populate('notes')
+        res.send(user);
+
+    } catch (error) {
+        res.status(500).send({ err: error.message })
+        console.log(error)
+    }
+}
+module.exports = { registerController, getUserProfileController }
