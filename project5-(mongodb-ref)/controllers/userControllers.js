@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const { User } = require("../models/User");
+const { default: mongoose } = require("mongoose");
 
 const registerController = async (req, res) => {
 
@@ -26,6 +27,10 @@ const getUserProfileController = async (req, res) => {
 
         const user = await User.findById(userId)
         // const user = await User.findById(userId).populate('notes')
+        // console.log(user.populated('notes'))
+        // user.depopulate('notes')
+        console.log(user.notes instanceof mongoose.Types.ObjectId)
+
         res.send(user);
 
     } catch (error) {
