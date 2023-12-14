@@ -25,11 +25,18 @@ const getUserProfileController = async (req, res) => {
 
         const { userId } = req.params;
 
-        const user = await User.findById(userId)
-        // const user = await User.findById(userId).populate('notes')
+        // const user = await User.findById(userId)
+        // const user = await User.findById(userId).populate([
+        //     { path: 'notes', select: ["title"] },
+        //     { path: 'products', select: ["price"] }
+        // ])
+
+        const user = await User.findById(userId).populate('notes', ["title", 'content'])
         // console.log(user.populated('notes'))
         // user.depopulate('notes')
-        console.log(user.notes instanceof mongoose.Types.ObjectId)
+        // console.log(user.notes instanceof mongoose.Types.ObjectId)
+
+
 
         res.send(user);
 

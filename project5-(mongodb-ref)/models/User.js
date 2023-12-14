@@ -16,6 +16,13 @@ const UserSchema = mongoose.Schema({
             unique: true,
             ref: 'notes'
         }
+    ],
+    products: [
+        {
+            type: mongoose.Types.ObjectId,
+            unique: true,
+            ref: 'products'
+        }
     ]
 })
 
