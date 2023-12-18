@@ -12,6 +12,10 @@ const studentSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    // address: {
+    //     city: String,
+    //     street: Number
+    // },
     courses: [String],
 });
 

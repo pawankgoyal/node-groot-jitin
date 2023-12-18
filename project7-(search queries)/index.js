@@ -21,11 +21,13 @@ app.get('/students', async (req, res) => {
     // const result = await Student.find()
     // const result = await Student.find().where("age").gte(20)
     // const result = await Student.find().where("age").lte(20)
-    // const result = await Student.find().where("age").lte(20).where("name").equals("John Doe")
+    // const result = await Student.find()
+    //      .where("age").lte(20)
+    //      .where("name").equals("John Doe")
 
     // const result = await Student.find()
     //     .where("age").lte(20)
-    //     .where("name").regex("")
+    //     .where("name").regex("e")
 
     // const result = await Student.find()
     //     .where("courses").size(1)
@@ -35,6 +37,39 @@ app.get('/students', async (req, res) => {
 
     // const result = await Student.find()
     //     .where('age').gt(22).countDocuments();
+
+    // const result = await Student.find().where("clientId").exists()
+
+    // const query = Student.find().exists("clientId", false)
+    // let result = await query.countDocuments()
+
+    // const result = await Student.find().sort({ "age": 1 }).limit(5)
+
+    // const result = await Student.find().sort({ "age": 1 }).lean()
+    // delete result[0].name
+
+    // const result = await Student.find().sort({ "age": 1 }).skip(7).limit(100)
+
+    // const result = await Student.find().sort({ "age": 1 }).where("name").in(["Eva White", "John Doe"])
+    // const result = await Student.find().sort({ "age": 1 }).where("name").in([new RegExp("ev", "i"), "John Doe"])
+    // const result = await Student.find().sort({ "age": 1 }).where("name").in([/ev/i, "John Doe"])
+
+
+    // -----------------------------------------------------------
+    // if nested keys are present
+
+    // {
+    //     "_id": "657b18952975e503710e3cfb",
+    //     "name": "Eva White",
+    //     address: {
+    //          city: "jaipur",
+    //          street: "124"
+    //     }
+    //     "__v": 0
+    // }
+
+    // const result = await Student.find().where("address.city").equals('jaipur')
+    // ----------------------------------------------------------
 
     res.json({ result })
 })
