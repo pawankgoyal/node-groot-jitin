@@ -18,7 +18,7 @@ app.get('/addStudents', (req, res) => {
 })
 
 app.get('/students', async (req, res) => {
-    // const result = await Student.find()
+    const result = await Student.find()
     // const result = await Student.find().where("age").gte(20)
     // const result = await Student.find().where("age").lte(20)
     // const result = await Student.find()
@@ -72,6 +72,57 @@ app.get('/students', async (req, res) => {
     // ----------------------------------------------------------
 
     res.json({ result })
+})
+
+app.get('/students/jsonQuery', async (req, res) => {
+    // const result = await Student.find({
+    //     age: {
+    //         $gt: 20
+    //     }
+    // })
+
+    // const result = await Student.find({
+    //     age: {
+    //         $lt: 21,
+    //         $gt: 19
+    //     },
+    // })
+
+    // const result = await Student.find({
+    //     age: {
+    //         $lt: 21,
+    //     },
+    //     name: "John Doe"
+    // })
+
+    // const result = await Student.find({
+    //     age: {
+    //         $lt: 21,
+    //     },
+    //     name: /Ev/
+    // })
+
+    // get data which contains courses with size of lt 2 AND gt 0
+    // const result = await Student.find({
+    //     $and: [
+    //         {
+    //             $expr: { $lt: [{ $size: "$courses" }, 2] }
+    //         },
+    //         {
+    //             $expr: { $gt: [{ $size: "$courses" }, 0] }
+    //         }
+    //     ]
+    // })
+
+    // const result = await Student.find({
+    //     courses: { $in: ['Mathematics'] }
+    // })
+
+    const result = await Student.find({
+        courses: { $elemMatch: { $eq: 'Mathematics' } }
+    })
+
+    res.send({ result })
 })
 
 app.listen(1400, () => {
