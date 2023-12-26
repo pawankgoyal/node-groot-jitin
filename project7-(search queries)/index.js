@@ -118,8 +118,23 @@ app.get('/students/jsonQuery', async (req, res) => {
     //     courses: { $in: ['Mathematics'] }
     // })
 
+    // const result = await Student.find({
+    //     courses: { $elemMatch: { $eq: 'Mathematics' } }
+    // })
+
+    // const result = await Student.find({
+    //     name: { $in: ["Eva White", "John Doe"] }
+    // })
+
+    // const result = await Student.find({ age: 21 }).limit(2)
+
     const result = await Student.find({
-        courses: { $elemMatch: { $eq: 'Mathematics' } }
+        // TODO
+        "address.city": "jaipur",
+        // TODO
+        address: {
+            city: "jaipur"
+        }
     })
 
     res.send({ result })
